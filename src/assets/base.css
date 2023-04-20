@@ -1,0 +1,21 @@
+body {
+  min-height: 100vh;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+/* 系統顏色 */
+:root {
+  --primary-color: #0b1697;
+  --danger-color: #dc3545;
+  --dark-color: #5d5d5d;
+  --dark-gray-color: #84837f;
+  --warning-color: #ffc107;
+  --darken-color: #5d5d5de6;
+  --light-gray-color: #f0ede7;
+  --lighter-color: #ffffffcc;
+  --dark-green-color: #198754;
+  --gray-green-color: #afb8a7;
+  --light-yellow-color: #d8d2c5;
+}
