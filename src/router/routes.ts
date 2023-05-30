@@ -3,13 +3,8 @@ import type { RouteRecordRaw } from 'vue-router'
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
-    name: 'home',
-    component: () => import('../views/HomeView.vue')
-  },
-  {
-    path: '/todo',
-    name: 'todo',
-    component: () => import('../views/TodoView.vue')
+    name: 'login',
+    component: () => import('@/views/Login/Login.vue')
   }
 ]
 export default routes
