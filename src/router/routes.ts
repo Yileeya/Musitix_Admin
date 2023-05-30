@@ -7,10 +7,17 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/views/Login/Login.vue')
   },
   {
-    path: '/qrcode',
-    name: 'qrcode',
+    path: '/',
+    component: () => import('@/components/AdminLayout.vue'),
     meta: { requiresAuth: true },
-    component: () => import('@/views/QrCode/QrcodeLayout.vue')
+    children: [
+      {
+        path: 'qrcode',
+        name: 'qrcode',
+        meta: { requiresAuth: true },
+        component: () => import('@/views/QrCode/QrcodeLayout.vue')
+      }
+    ]
   }
 ]
 export default routes
