@@ -59,7 +59,6 @@ const login = async (form: any) => {
   sending.value = true
   try {
     let res = await postLogin(form)
-    console.log(res)
     if (res.status === 200) {
       Toast.success('登入成功')
       localStorage.setItem('Token', res.data.user.token)
@@ -68,7 +67,6 @@ const login = async (form: any) => {
       Toast.error('登入失敗')
     }
   } catch (err: any) {
-    console.log('err', err)
     Toast.error(err.response.data.message)
   }
   sending.value = false
