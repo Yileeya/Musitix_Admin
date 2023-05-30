@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const https = axios.create({
-  baseURL: `${import.meta.env.VITE_API_URL}/admin`
+  baseURL: 'https://musitix-api.onrender.com/admin'
 })
 
 https.interceptors.request.use((config) => {
