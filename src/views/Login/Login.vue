@@ -25,7 +25,7 @@ import * as Yup from 'yup'
 import { Form } from 'vee-validate'
 import ValidateTextInput from '@/components/ValidateTextInput.vue'
 import { useToast } from 'vue-toastification'
-import type { AxiosResponse } from 'axios'
+import { useRouter } from 'vue-router'
 
 const loginForm = ref([
   {
@@ -54,17 +54,21 @@ const showInputType = (name: string) => {
 
 // 登入
 const Toast = useToast()
+const router = useRouter()
 const login = async (form: any) => {
   sending.value = true
   try {
     let res = await postLogin(form)
+    console.log(res)
     if (res.status === 200) {
       Toast.success('登入成功')
       localStorage.setItem('Token', res.data.user.token)
+      await router.push('/qrcode')
     } else {
       Toast.error('登入失敗')
     }
   } catch (err: any) {
+    console.log('err', err)
     Toast.error(err.response.data.message)
   }
   sending.value = false
