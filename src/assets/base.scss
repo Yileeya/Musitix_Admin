@@ -19,3 +19,39 @@ body {
   --gray-green-color: #afb8a7;
   --light-yellow-color: #d8d2c5;
 }
+
+button,
+.form-control,
+.form-select {
+  &:focus {
+    box-shadow: none !important;
+  }
+  &:disabled:hover {
+    cursor: not-allowed;
+  }
+}
+
+.form-control,
+.form-select {
+  height: 42px;
+}
+
+.btn-black {
+  background-color: black;
+  color: white;
+
+  &:hover {
+    background-color: var(--warning-color);
+    color: black;
+  }
+}
+
+.btn-purple {
+  background-color: var(--purple);
+  color: white;
+
+  &:hover {
+    background-color: var(--warning-color);
+    color: black;
+  }
+}
