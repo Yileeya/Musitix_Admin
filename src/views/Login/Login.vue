@@ -57,13 +57,15 @@ const Toast = useToast()
 const login = async (form: any) => {
   sending.value = true
   try {
-    let res: AxiosResponse<{ message: string; user: { token: string } }> = await postLogin(form)
-    if (res.data.message === '成功') {
+    let res = await postLogin(form)
+    if (res.status === 200) {
       Toast.success('登入成功')
       localStorage.setItem('Token', res.data.user.token)
+    } else {
+      Toast.error('登入失敗')
     }
   } catch (err: any) {
-    Toast.error('登入失敗')
+    Toast.error(err.response.data.message)
   }
   sending.value = false
 }
