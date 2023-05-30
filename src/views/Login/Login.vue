@@ -20,12 +20,12 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import type { Login } from '@/types/user/login'
 import { postLogin } from '@/apis/user/login'
 import * as Yup from 'yup'
 import { Form } from 'vee-validate'
 import ValidateTextInput from '@/components/ValidateTextInput.vue'
 import { useToast } from 'vue-toastification'
+import type { AxiosResponse } from 'axios'
 
 const loginForm = ref([
   {
@@ -54,14 +54,13 @@ const showInputType = (name: string) => {
 
 // 登入
 const Toast = useToast()
-const login = async (form: Login) => {
+const login = async (form: any) => {
   sending.value = true
   try {
-    let res = await postLogin(form)
-    console.log(res)
-    if (res.message === '成功') {
+    let res: AxiosResponse<{ message: string; user: { token: string } }> = await postLogin(form)
+    if (res.data.message === '成功') {
       Toast.success('登入成功')
-      localStorage.setItem('Token', res.user.token)
+      localStorage.setItem('Token', res.data.user.token)
     }
   } catch (err: any) {
     Toast.error('登入失敗')
