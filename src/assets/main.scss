@@ -5,31 +5,49 @@
 @import 'font-awesome/css/font-awesome.min.css';
 
 .v-sidebar-menu {
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22) !important;
+
   .vsm--toggle-btn {
     order: -1;
+
     .vsm--toggle-btn_default {
       display: none;
     }
+
     &:after {
       content: '\f0c9';
       font-family: 'FontAwesome';
     }
   }
+
   &.vsm_expanded {
     .vsm--toggle-btn {
       justify-content: space-between;
       padding: 5px 20px;
+
       &:before {
         content: 'Musitix後台';
         font-weight: bold;
       }
     }
   }
+
   .vsm--icon {
     background-color: whitesmoke !important;
     color: black !important;
   }
+
   .vsm--mobile-bg {
     background-color: var(--darken-color);
+  }
+}
+
+.navbar {
+  height: 65px;
+  background-color: white;
+  border-bottom: 1px solid #dee2e6;
+
+  .container-fluid {
+    justify-content: flex-end;
   }
 }
