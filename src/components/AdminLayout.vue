@@ -2,7 +2,9 @@
   <div class="admin-layout">
     <navbar />
     <sidebar />
-    <RouterView />
+    <div class="admin-layout-container">
+      <RouterView />
+    </div>
   </div>
 </template>
 <script setup lang="ts">

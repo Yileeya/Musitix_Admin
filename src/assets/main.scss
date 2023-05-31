@@ -40,6 +40,14 @@
   .vsm--mobile-bg {
     background-color: var(--darken-color);
   }
+
+  &.vsm_expanded ~ .admin-layout-container {
+    padding-left: 300px;
+  }
+
+  &.vsm_collapsed ~ .admin-layout-container {
+    padding-left: 75px;
+  }
 }
 
 .navbar {
@@ -50,4 +58,8 @@
   .container-fluid {
     justify-content: flex-end;
   }
+}
+
+.admin-layout-container {
+  transition: 0.3s ease;
 }
