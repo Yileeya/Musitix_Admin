@@ -32,6 +32,7 @@ const onInit = async (promise: any) => {
   try {
     await promise
   } catch (error) {
+      console.log(error)
     const errorWithName = error as { name?: string }
     if (errorWithName?.name === 'NotAllowedError') {
       errorMsg.value = '錯誤：需要授予相機訪問權限'
