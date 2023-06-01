@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHashHistory } from 'vue-router'
 import routes from './routes'
 import { beforeEach } from './routerGuard'
 
@@ -6,13 +6,16 @@ const allRoutes = [
   ...routes,
   {
     path: '/:pathMatch(.*)*',
-    redirect: { name: 'home' } // 如果找不到路由，重導向到首頁
+    redirect: { name: 'qrcode' }
   }
 ]
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
-  routes: allRoutes
+  history: createWebHashHistory(),
+  routes: allRoutes,
+  scrollBehavior(to, from, savedPosition) {
+    return { top: 0, behavior: 'smooth' }
+  }
 })
 
 // 設定導航守衛
