@@ -13,26 +13,36 @@
     {{ camera ? '關閉' : '開啟' }}鏡頭
   </button>
   <p class="error-msg text-center" v-if="errorMsg">{{ errorMsg }}</p>
-  {{ qrCodeResult }}
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { QrcodeStream } from 'vue-qrcode-reader'
+import { qrcodeCheckInStore } from '@/stores/qrcodeCheckIn'
+
+const qrcodeCheckIn = qrcodeCheckInStore()
 
 const qrCodeResult = ref<string>('')
 const errorMsg = ref<string>('')
 const camera = ref<boolean>(true)
 
-function onDecode(data: any) {
-  qrCodeResult.value = data
+// 報到進行中，關閉鏡頭
+watch(
+  () => qrcodeCheckIn.isFetching,
+  (newVal) => {
+    if (errorMsg.value) return
+    camera.value = !newVal
+  }
+)
+
+function onDecode(data: string) {
+  qrcodeCheckIn.setTicketId(data)
 }
 
 const onInit = async (promise: any) => {
   try {
     await promise
   } catch (error) {
-      console.log(error)
     const errorWithName = error as { name?: string }
     if (errorWithName?.name === 'NotAllowedError') {
       errorMsg.value = '錯誤：需要授予相機訪問權限'

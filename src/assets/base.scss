@@ -20,14 +20,29 @@ body {
   --light-yellow-color: #d8d2c5;
 }
 
+@mixin blackBg {
+  background-color: black;
+  color: white;
+}
+
+@mixin warningBg {
+  background-color: var(--warning-color);
+  color: black;
+}
+
 button,
 .form-control,
 .form-select {
   &:focus {
     box-shadow: none !important;
   }
-  &:disabled:hover {
-    cursor: not-allowed;
+
+  &:disabled {
+    pointer-events: auto !important;
+
+    &:hover {
+      cursor: not-allowed;
+    }
   }
 }
 
@@ -37,12 +52,15 @@ button,
 }
 
 .btn-black {
-  background-color: black;
-  color: white;
+  @include blackBg;
 
   &:hover {
-    background-color: var(--warning-color);
-    color: black;
+    @include warningBg;
+  }
+
+  &:disabled {
+    @include blackBg;
+    opacity: 0.25;
   }
 }
 
@@ -51,7 +69,6 @@ button,
   color: white;
 
   &:hover {
-    background-color: var(--warning-color);
-    color: black;
+    @include warningBg;
   }
 }
