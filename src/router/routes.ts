@@ -16,6 +16,11 @@ const routes: RouteRecordRaw[] = [
         name: 'qrcode',
         meta: { requiresAuth: true },
         component: () => import('@/views/QrCode/QrcodeLayout.vue')
+      },
+      {
+        path: 'activity/:id',
+        name: 'activity',
+        component: () => import('@/views/Activity/ActivityLayout.vue')
       }
     ]
   }
