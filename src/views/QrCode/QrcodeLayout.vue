@@ -4,6 +4,7 @@
       <qrcode-reader />
       <input-check-in :is-refresh="isRefresh" />
     </div>
+    <order-information class="order-information" />
   </section>
 </template>
 
@@ -15,6 +16,7 @@ import { ref, watch } from 'vue'
 import { useToast } from 'vue-toastification'
 import { pageLoadingStore } from '@/stores/pageLoading'
 import { qrcodeCheckInStore } from '@/stores/qrcodeCheckIn'
+import OrderInformation from '@/views/QrCode/OrderInformation.vue'
 
 const pageLoading = pageLoadingStore()
 const qrcodeCheckIn = qrcodeCheckInStore()
@@ -62,14 +64,22 @@ const resetQrcodeInfo = () => {
 
 <style scoped lang="scss">
 .qrcode-layout {
-  padding: 30px 15px;
+  padding: 50px 15px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3em;
 
   .qrcode-reader {
     width: 400px;
+    flex-shrink: 0;
     @media (max-width: 992px) {
       width: 300px;
       margin: auto;
     }
+  }
+
+  .order-information {
+    flex-grow: 1;
   }
 }
 </style>
