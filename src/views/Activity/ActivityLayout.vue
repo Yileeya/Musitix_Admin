@@ -2,6 +2,7 @@
   <div class="activity-layout container">
     <tabs-title :current-tab="currentTab" @update:current-tab="(newVal) => (currentTab = newVal)" />
     <information v-show="currentTab === 'information'" />
+    <content v-show="currentTab === 'content'" />
   </div>
 </template>
 
@@ -9,12 +10,13 @@
 import { ref } from 'vue'
 import TabsTitle from '@/views/Activity/TabsTitle.vue'
 import Information from '@/views/Activity/Information.vue'
+import Content from '@/views/Activity/Content.vue'
 
 const currentTab = ref<string>('information')
 </script>
 
 <style scoped lang="scss">
 .activity-layout {
-  margin: 30px;
+  padding: 30px;
 }
 </style>

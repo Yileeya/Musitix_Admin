@@ -9,13 +9,10 @@ _.forEach(activityInfoFields, (field) => {
 
 export const activityHandle = defineStore('activityHandle', {
   state: () => ({
-    information: defaultInformation
+    information: defaultInformation,
+    HtmlContent: '',
+    HtmlNotice: ''
   }),
-  actions: {
-    setInformation(value: any) {
-      this.information = value
-    }
-  },
   getters: {
     formatResult(state) {
       const { dateRange, ...infoResult } = state.information

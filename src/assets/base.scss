@@ -80,3 +80,8 @@ button,
     font-size: 16px;
   }
 }
+
+.ck.ck-content:not(.ck-comment__input *) {
+  height: 250px;
+  overflow-y: auto;
+}
