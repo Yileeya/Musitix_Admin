@@ -6,7 +6,7 @@
 
 .v-sidebar-menu {
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22) !important;
-
+  z-index: 1045;
   .vsm--toggle-btn {
     order: -1;
 
@@ -62,4 +62,5 @@
 
 .admin-layout-container {
   transition: 0.3s ease;
+  margin-top: 65px;
 }
