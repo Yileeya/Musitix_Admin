@@ -1,5 +1,11 @@
 <template>
-  <date-picker v-bind="$attrs" :value="modelValue" :lang="langObject" @change="emitValue" />
+  <date-picker
+    v-bind="$attrs"
+    :value="modelValue"
+    :lang="langObject"
+    @change="emitValue"
+    @clear="emitValue([])"
+  />
 </template>
 
 <script setup>

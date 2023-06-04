@@ -72,3 +72,11 @@ button,
     @include warningBg;
   }
 }
+
+//date-picker
+.mx-datepicker {
+  .mx-input {
+    height: 42px;
+    font-size: 16px;
+  }
+}
