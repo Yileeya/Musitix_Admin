@@ -4,12 +4,12 @@
 
 <script setup>
 import { ref, watch } from 'vue'
-import Editor from 'ckeditor5-custom-build/build/ckeditor'
+import * as ClassicEditor from 'ckeditor5-custom-build/build/ckeditor';
 
 const props = defineProps(['modelValue'])
 const emit = defineEmits(['update:modelValue'])
 
-const editor = ref(Editor)
+const editor = ref(ClassicEditor)
 const editorData = ref(props.modelValue ? props.modelValue : '')
 const config = ref({
   placeholder: '請輸入內容',
