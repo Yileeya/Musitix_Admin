@@ -3,8 +3,7 @@
 </template>
 
 <script>
-import Editor from 'ckeditor5-custom-build/build/ckeditor';
-
+import * as Editor from 'ckeditor5-custom-build/build/ckeditor';
 export default {
     data() {
         return {
