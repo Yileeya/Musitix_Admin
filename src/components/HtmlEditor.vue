@@ -1,29 +1,19 @@
 <template>
-  <ckeditor :editor="editor" :config="config" v-model="editorData" />
+    <ckeditor :editor="editor" v-model="editorData" :config="editorConfig"/>
 </template>
 
-<script setup>
-import { ref, watch } from 'vue'
-import * as ClassicEditor from 'ckeditor5-custom-build/build/ckeditor';
+<script>
+import Editor from 'ckeditor5-custom-build/build/ckeditor';
 
-const props = defineProps(['modelValue'])
-const emit = defineEmits(['update:modelValue'])
-
-const editor = ref(ClassicEditor)
-const editorData = ref(props.modelValue ? props.modelValue : '')
-const config = ref({
-  placeholder: '請輸入內容',
-  removePlugins: ['Title', 'ImageInsert', 'ImageUpload', 'SimpleUploadAdapter']
-})
-
-watch(
-  () => props.modelValue,
-  (newVal) => {
-    editorData.value = newVal
-  }
-)
-
-watch(editorData, (newVal) => {
-  emit('update:modelValue', newVal)
-})
+export default {
+    data() {
+        return {
+            editor: Editor,
+            editorData: '<p>Content of the editor.</p>',
+            editorConfig: {
+                // The configuration of the editor.
+            }
+        };
+    }
+}
 </script>
