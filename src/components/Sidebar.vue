@@ -12,11 +12,11 @@ const menu = ref([
     title: '活動報到',
     icon: 'fa fa-qrcode fa-lg'
   },
-  {
-    href: '/activity/new',
-    title: '新增活動',
-    icon: 'fa fa fa-pencil-square-o fa-lg'
-  }
+  // {
+  //   href: '/activity/new',
+  //   title: '新增活動',
+  //   icon: 'fa fa fa-pencil-square-o fa-lg'
+  // }
 ])
 </script>
 
