@@ -9,7 +9,7 @@
 </template>
 
 <script setup>
-import 'vue-datepicker-next/locale/zh-tw'
+import 'vue-datepicker-next/locale/zh-tw.es'
 import DatePicker from 'vue-datepicker-next'
 import { ref } from 'vue'
 
