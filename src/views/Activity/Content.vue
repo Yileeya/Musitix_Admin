@@ -5,11 +5,14 @@
     </div>
     <div class="form-group" v-for="i in 2" :key="i">
       <label>{{ i === 1 ? '活動內容' : '購票說明' }}</label>
+      <html-editor v-if="i === 1" v-model="activityInfo.HtmlContent" />
+      <html-editor v-else v-model="activityInfo.HtmlNotice" />
     </div>
   </section>
 </template>
 
 <script setup lang="ts">
+import HtmlEditor from '@/components/HtmlEditor.vue'
 import { activityHandle } from '@/stores/activityHandle'
 
 const activityInfo = activityHandle()
