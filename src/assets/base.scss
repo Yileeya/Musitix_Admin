@@ -82,6 +82,6 @@ button,
 }
 
 .ck.ck-content:not(.ck-comment__input *) {
-  height: 250px;
+  min-height: 250px;
   overflow-y: auto;
 }

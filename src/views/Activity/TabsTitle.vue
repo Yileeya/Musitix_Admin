@@ -9,6 +9,7 @@
     >
       {{ title.name }}
     </div>
+    <a class="btn btn-sm btn-secondary" href="https://unsplash.com/s/photos/band" target="_blank">圖片素材網</a>
   </section>
 </template>
 
@@ -37,8 +38,6 @@ const titles = ref([
 <style scoped lang="scss">
 .title-nav {
   display: flex;
-  background-color: white;
-  gap: 15px;
   width: fit-content;
   align-items: flex-end;
   .title-tab {
@@ -46,13 +45,19 @@ const titles = ref([
     text-align: center;
     font-size: 18px;
     padding: 10px;
+    background-color: white;
+    border-top: 2px solid white;
     &.active {
       font-weight: bold;
       border-bottom: 2px solid;
+      border-top: none;
     }
     &:hover {
       cursor: pointer;
     }
+  }
+  .btn-secondary {
+    margin: 0 20px;
   }
 }
 </style>
