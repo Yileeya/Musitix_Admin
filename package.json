@@ -24,6 +24,7 @@
     "@ckeditor/ckeditor5-paragraph": "^38.0.1",
     "@ckeditor/ckeditor5-source-editing": "^38.0.1",
     "@ckeditor/ckeditor5-theme-lark": "^38.0.1",
+    "@ckeditor/ckeditor5-upload": "^38.0.1",
     "@ckeditor/ckeditor5-vue": "^5.1.0",
     "@ckeditor/vite-plugin-ckeditor5": "^0.1.3",
     "@popperjs/core": "^2.11.7",

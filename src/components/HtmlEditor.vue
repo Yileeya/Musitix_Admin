@@ -9,12 +9,19 @@ import { Essentials } from '@ckeditor/ckeditor5-essentials'
 import { Bold, Italic, Strikethrough, Underline } from '@ckeditor/ckeditor5-basic-styles'
 import { Paragraph } from '@ckeditor/ckeditor5-paragraph'
 import { SourceEditing } from '@ckeditor/ckeditor5-source-editing'
-import { Image, ImageResize } from '@ckeditor/ckeditor5-image'
+import {
+  Image,
+  ImageResize,
+  ImageInsert,
+  ImageToolbar,
+  ImageStyle
+} from '@ckeditor/ckeditor5-image'
 import { Alignment } from '@ckeditor/ckeditor5-alignment'
 import { Font } from '@ckeditor/ckeditor5-font'
 import { Heading } from '@ckeditor/ckeditor5-heading'
 import { DocumentList } from '@ckeditor/ckeditor5-list'
 import { MediaEmbed } from '@ckeditor/ckeditor5-media-embed'
+import { MyCustomUploadAdapterPlugin } from '@/plugins/myCustomUploadAdapterPlugin'
 
 import { ref, watch } from 'vue'
 
@@ -25,6 +32,7 @@ const editor = ref(ClassicEditor)
 const editorData = ref(props.modelValue ? props.modelValue : '')
 const editorConfig = {
   placeholder: '請輸入內容',
+  extraPlugins: [MyCustomUploadAdapterPlugin],
   plugins: [
     Alignment,
     Essentials,
@@ -37,6 +45,9 @@ const editorConfig = {
     AutoImage,
     Image,
     ImageResize,
+    ImageInsert,
+    ImageToolbar,
+    ImageStyle,
     Font,
     Heading,
     DocumentList,
@@ -55,11 +66,33 @@ const editorConfig = {
       'alignment',
       'bulletedList',
       'numberedList',
+      'insertImage',
       'mediaEmbed',
       '|',
       'undo',
       'redo',
       'sourceEditing'
+    ]
+  },
+  image: {
+    styles: {
+      options: [
+        'inline',
+        'alignLeft',
+        'alignRight',
+        'alignCenter',
+        'alignBlockLeft',
+        'alignBlockRight',
+        'block',
+        'side'
+      ]
+    },
+    toolbar: [
+      'imageStyle:inline',
+      'imageStyle:wrapText',
+      'imageStyle:breakText',
+      '|',
+      'imageTextAlternative'
     ]
   }
 }
