@@ -4,7 +4,10 @@
     <div class="form-group">
       <div class="form-input" v-for="field in checkInFields" :key="field.id">
         <label>{{ field.name }}</label>
-        <span>
+        <span v-if="field.id === 'ticketNumber' && !qrcodeCheckIn.orderInfo">
+          {{ qrcodeCheckIn.ticketId || '-' }}
+        </span>
+        <span v-else>
           {{ qrcodeCheckIn.getOrderInfoResult?.[field.id] || '-' }}
         </span>
       </div>

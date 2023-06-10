@@ -8,7 +8,7 @@
     v-if="!errorMsg"
     class="btn btn-camera"
     :class="[camera ? 'btn-secondary' : 'btn-primary']"
-    @click="camera = !camera"
+    @click="toggleCamera"
   >
     {{ camera ? '關閉' : '開啟' }}鏡頭
   </button>
@@ -22,7 +22,6 @@ import { qrcodeCheckInStore } from '@/stores/qrcodeCheckIn'
 
 const qrcodeCheckIn = qrcodeCheckInStore()
 
-const qrCodeResult = ref<string>('')
 const errorMsg = ref<string>('')
 const camera = ref<boolean>(true)
 
@@ -37,6 +36,14 @@ watch(
 
 function onDecode(data: string) {
   qrcodeCheckIn.setTicketId(data)
+}
+
+function toggleCamera() {
+  camera.value = !camera.value
+  if (camera.value) {
+    //手動開啟相機，將ticketId清空
+    qrcodeCheckIn.setTicketId('')
+  }
 }
 
 const onInit = async (promise: any) => {

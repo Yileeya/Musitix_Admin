@@ -17,10 +17,6 @@ import { qrcodeCheckInStore } from '@/stores/qrcodeCheckIn'
 
 const qrcodeCheckIn = qrcodeCheckInStore()
 
-const props = defineProps<{
-  isRefresh: boolean
-}>()
-
 const ticketId = ref<string>('')
 
 const emitCheckIn = () => {
@@ -29,7 +25,7 @@ const emitCheckIn = () => {
 
 //報到成功，清空輸入框
 watch(
-  () => props.isRefresh,
+  () => qrcodeCheckIn.orderInfo,
   (newVal) => {
     if (newVal) ticketId.value = ''
   }

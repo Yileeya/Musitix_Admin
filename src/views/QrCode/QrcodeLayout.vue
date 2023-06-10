@@ -2,7 +2,7 @@
   <section class="qrcode-layout">
     <div class="qrcode-reader">
       <qrcode-reader />
-      <input-check-in :is-refresh="isRefresh" />
+      <input-check-in />
     </div>
     <order-information class="order-information" />
   </section>
@@ -22,8 +22,6 @@ const pageLoading = pageLoadingStore()
 const qrcodeCheckIn = qrcodeCheckInStore()
 const Toast = useToast()
 
-const isRefresh = ref<boolean>(false)
-
 watch(
   () => qrcodeCheckIn.ticketId,
   async (newVal) => {
@@ -35,7 +33,6 @@ watch(
 const fetchQrcodeCheckIn = async () => {
   pageLoading.changeLoadingStatus(true)
   pageLoading.changeLoadingContent('報到中請稍後...')
-  isRefresh.value = false
   try {
     let res = await postQrcodeCheckIn(qrcodeCheckIn.ticketId)
     if (res.status === 200) {
@@ -46,7 +43,6 @@ const fetchQrcodeCheckIn = async () => {
       } else {
         qrcodeCheckIn.setOrderInfo(res.data.data)
         Toast.success('報到成功')
-        isRefresh.value = true
       }
     }
   } catch (err: any) {
@@ -57,7 +53,6 @@ const fetchQrcodeCheckIn = async () => {
 }
 
 const resetQrcodeInfo = () => {
-  qrcodeCheckIn.setTicketId('')
   qrcodeCheckIn.setOrderInfo(null)
 }
 </script>
