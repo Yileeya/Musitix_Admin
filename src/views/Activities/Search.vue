@@ -17,13 +17,14 @@
 import StatusSelect from '@/views/Activities/StatusSelect.vue'
 import { ref } from 'vue'
 import ExtendedDatePicker from '@/components/ExtendedDatePicker.vue'
+import dayjs from 'dayjs'
 
 defineProps(['loading'])
 const emit = defineEmits(['search'])
 
 const searchQuery = ref({
   status: '',
-  dateRange: [],
+  dateRange: [dayjs().startOf('month').toDate(), dayjs().endOf('month').toDate()],
   subject: ''
 })
 
@@ -33,6 +34,9 @@ const search = () => {
   searchOption.eventEndDate = dateRange.length ? dateRange[1].toISOString() : ''
   emit('search', searchOption)
 }
+
+//預設搜尋一個月內容
+search()
 </script>
 
 <style scoped lang="scss">
