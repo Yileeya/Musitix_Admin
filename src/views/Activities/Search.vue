@@ -9,7 +9,7 @@
       placeholder="請選擇日期區間"
     />
     <input v-model="searchQuery.subject" class="form-control" placeholder="請輸入關鍵字" />
-    <button class="btn-primary btn" @click="search">搜尋</button>
+    <button class="btn-primary btn" @click="search" :disabled="loading">搜尋</button>
   </section>
 </template>
 
@@ -18,6 +18,7 @@ import StatusSelect from '@/views/Activities/StatusSelect.vue'
 import { ref } from 'vue'
 import ExtendedDatePicker from '@/components/ExtendedDatePicker.vue'
 
+defineProps(['loading'])
 const emit = defineEmits(['search'])
 
 const searchQuery = ref({
@@ -28,8 +29,8 @@ const searchQuery = ref({
 
 const search = () => {
   const { dateRange, ...searchOption } = searchQuery.value
-  searchOption.eventStartDate = dateRange[0].toISOString()
-  searchOption.eventEndDate = dateRange[1].toISOString()
+  searchOption.eventStartDate = dateRange.length ? dateRange[0].toISOString() : ''
+  searchOption.eventEndDate = dateRange.length ? dateRange[1].toISOString() : ''
   emit('search', searchOption)
 }
 </script>
