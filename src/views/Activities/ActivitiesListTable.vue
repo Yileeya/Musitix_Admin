@@ -102,7 +102,7 @@ const dateIsAfterToday = (startDate) => {
         background-color: #ef5b69;
       }
       &.status-2 {
-        background-color: #80e8b7;
+        background-color: transparent;
         color: black;
       }
     }
