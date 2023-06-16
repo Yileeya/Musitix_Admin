@@ -1,7 +1,11 @@
 <template>
   <div class="container">
-    <search @search="fetchSearch" :loading="loading" />
-    <activities-list-table :loading="loading" :activities="activities" />
+    <search :loading="loading" @search="fetchSearch" @router-change="routerChange" />
+    <activities-list-table
+      :loading="loading"
+      :activities="activities"
+      @router-change="routerChange"
+    />
   </div>
 </template>
 
@@ -12,6 +16,7 @@ import { getActivities } from '@/apis/activities/activities'
 import { ref } from 'vue'
 import _ from 'lodash'
 import { useToast } from 'vue-toastification'
+import { useRouter } from 'vue-router'
 
 const Toast = useToast()
 const loading = ref(false)
@@ -43,6 +48,11 @@ const fetchSearch = async (searchQuery) => {
     handleFetchError()
   }
   loading.value = false
+}
+
+const router = useRouter()
+const routerChange = (activityId) => {
+  router.push(`/activity/${activityId}`)
 }
 </script>
 

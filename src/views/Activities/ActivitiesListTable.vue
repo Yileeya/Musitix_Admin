@@ -34,7 +34,7 @@
                 <div v-if="activity.status === 1">
                   <!--未上架，可編輯-->
                   <button class="btn btn-sm btn-warning">上架</button>
-                  <button class="btn btn-sm btn-primary" @click="changeRouter(activity._id)">
+                  <button class="btn btn-sm btn-primary" @click="emitChangeRouterId(activity._id)">
                     編輯
                   </button>
                   <button class="btn btn-sm btn-danger">取消</button>
@@ -58,9 +58,9 @@ import LoadingSpinner from '@/components/LoadingSpinner.vue'
 import dayjs from 'dayjs'
 import _ from 'lodash'
 import activityStatusFields from '@/formFields/activityStatusFields'
-import { useRouter } from 'vue-router'
 
 defineProps(['loading', 'activities'])
+const emit = defineEmits(['routerChange'])
 
 const showActivityDate = (startDate, endDate) => {
   const startDateFormat = dateFormatUTC(startDate, 'YYYY-MM-DD')
@@ -80,9 +80,8 @@ const dateIsAfterToday = (startDate) => {
   return today.isBefore(compareDate)
 }
 
-const router = useRouter()
-const changeRouter = (activityId) => {
-  router.push(`/activity/${activityId}`)
+const emitChangeRouterId = (activityId) => {
+  emit('routerChange', activityId)
 }
 </script>
 

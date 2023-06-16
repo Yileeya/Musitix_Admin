@@ -7,7 +7,7 @@
       <schedule-tickets v-show="currentTab === 'scheduleTickets'" />
     </div>
   </div>
-  <button class="btn btn-primary btn-lg fix-button" @click="saveActivity">儲存</button>
+  <button v-if="!pageLoading.loading" class="btn btn-primary btn-lg fix-button" @click="saveActivity">儲存</button>
 </template>
 
 <script setup lang="ts">
