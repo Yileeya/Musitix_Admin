@@ -14,41 +14,53 @@ const defaultTicketCategory = {
   remainingQuantity: null
 }
 
-const defaultSchedule = {
-  scheduleName: null as null | string,
-  startTime: null as null | string,
-  endTime: null as null | string,
-  saleStartTime: null as null | string,
-  saleEndTime: null as null | string,
+const defaultSchedule: {
+  scheduleName: null | string
+  startTime: null | string
+  endTime: null | string
+  saleStartTime: null | string
+  saleEndTime: null | string
+  ticketCategories: {
+    categoryName: null | string
+    price: null | number
+    totalQuantity: null | number
+    remainingQuantity: null | number
+  }[]
+} = {
+  scheduleName: null,
+  startTime: null,
+  endTime: null,
+  saleStartTime: null,
+  saleEndTime: null,
   ticketCategories: [{ ...defaultTicketCategory }]
 }
 
 export const activityHandle = defineStore('activityHandle', {
   state: () => ({
-    information: defaultInformation,
+    information: {},
     HtmlContent: '',
     HtmlNotice: '',
-    schedules: [
-      {
-        ...defaultSchedule,
-        scheduleName: '場次1'
-      }
-    ]
+    schedules: [] as (typeof defaultSchedule)[]
   }),
+  actions: {
+    reset() {
+      this.information = { ...defaultInformation, ...{ startDate: null, endDate: null } }
+      this.HtmlContent = ''
+      this.HtmlNotice = ''
+      this.schedules = [
+        {
+          ...defaultSchedule,
+          scheduleName: '場次1'
+        }
+      ]
+    }
+  },
   getters: {
     getDefaultTicketCategory() {
       return defaultTicketCategory
     },
     getDefaultSchedule() {
       return defaultSchedule
-    },
-    formatResult(state) {
-      const { dateRange, ...infoResult } = state.information
-      if (dateRange.length) {
-        infoResult.startDate = dateRange[0].toISOString()
-        infoResult.endDate = dateRange[1].toISOString()
-      }
-      return infoResult
     }
   }
 })
