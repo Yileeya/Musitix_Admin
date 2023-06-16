@@ -3,7 +3,10 @@
     <div class="add-schedule-btn">
       <button type="button" class="btn btn-primary" @click="addSchedule">增加場次</button>
     </div>
-    <table v-for="(schedule, scheduleIndex) in schedules" :key="'schedule' + scheduleIndex">
+    <table
+      v-for="(schedule, scheduleIndex) in activity.schedules"
+      :key="'schedule' + scheduleIndex"
+    >
       <thead>
         <tr>
           <th colspan="4">
@@ -16,7 +19,7 @@
               />
               <button
                 class="btn btn-danger"
-                v-if="schedules.length > 1"
+                v-if="activity.schedules.length > 1"
                 @click="removeSchedule(scheduleIndex)"
               >
                 移除場次
@@ -26,19 +29,19 @@
               <div class="form-group" v-for="index in 2">
                 <label>{{ index === 1 ? '起訖區間' : '販售區間' }}</label>
                 <extended-date-picker
-                  :model-value="
-                    index === 1
-                      ? [schedule.startTime, schedule.endTime]
-                      : [schedule.saleStartTime, schedule.saleEndTime]
-                  "
-                  :disabled-date="
-                    (date:any) => disabledDate(date, index === 1 ? 'scheduleDate' : 'scheduleSaleDate')
-                  "
                   class="date-picker"
                   range
                   type="datetime"
-                  :disabled="!activityHandle().information.dateRange.length"
+                  :model-value="
+                    index === 1
+                      ? formatDate(schedule.startTime, schedule.endTime)
+                      : formatDate(schedule.saleStartTime, schedule.saleEndTime)
+                  "
+                  :disabled-date="
+                    (date) => disabledDate(date, index === 1 ? 'scheduleDate' : 'scheduleSaleDate')
+                  "
                   :placeholder="'請選擇' + (index === 1 ? '起訖' : '販售') + '區間'"
+                  :disabled="!activityHandle().information.startDate"
                   @update:modelValue="(value) => updateDateValue(value, index, scheduleIndex)"
                 />
               </div>
@@ -109,60 +112,72 @@
   </section>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import ExtendedDatePicker from '@/components/ExtendedDatePicker.vue'
 import { activityHandle } from '@/stores/activityHandle'
 import _ from 'lodash'
+import dayjs from 'dayjs'
 
-const schedules = activityHandle().schedules
+const activity = activityHandle()
 
 // 判斷是否都有值
-function isAllValuesPresent(values: any) {
+function isAllValuesPresent(values) {
   return !_.some(values, (value) => !value)
 }
 
-const updateDateValue = (value: Array<string>, index: number, scheduleIndex: number) => {
+// format日期格式，供日期組件使用
+const formatDate = (startDate, endDate) => {
+  if (!startDate) return []
+  return [dayjs(startDate).toDate(), dayjs(endDate).toDate()]
+}
+
+// 更新日期，並轉換格式
+const updateDateValue = (value, index, scheduleIndex) => {
   if (index === 1) {
     //起訖
-    schedules[scheduleIndex].startTime = value.length ? value[0] : null
-    schedules[scheduleIndex].endTime = value.length ? value[1] : null
+    activity.schedules[scheduleIndex].startTime = value[0] ? value[0].toISOString() : null
+    activity.schedules[scheduleIndex].endTime = value[1] ? value[1].toISOString() : null
   } else {
     //銷售
-    schedules[scheduleIndex].saleStartTime = value.length ? value[0] : null
-    schedules[scheduleIndex].saleEndTime = value.length ? value[1] : null
+    activity.schedules[scheduleIndex].saleStartTime = value[0] ? value[0].toISOString() : null
+    activity.schedules[scheduleIndex].saleEndTime = value[1] ? value[1].toISOString() : null
   }
 }
 
-function disabledDate(date: any, target: string) {
-  const activityDate = activityHandle().information?.dateRange
-  const startDate = new Date(activityDate[0]).setHours(0, 0, 0, 0)
+// 侷限選擇日期
+function disabledDate(date, target) {
+  const activityStartDate = activityHandle().information.startDate
+  const activityEndDate = activityHandle().information.endDate
+  const startDate = new Date(activityStartDate).setHours(0, 0, 0, 0)
   if (target === 'scheduleDate') {
-    const endDate = new Date(activityDate[1]).setHours(0, 0, 0, 0)
+    //需在活動日期之中挑選
+    const endDate = new Date(activityEndDate).setHours(0, 0, 0, 0)
     return date < startDate || date > endDate
   } else {
+    //需在日期活動開始之前
     return date > startDate
   }
 }
 
 //票種操作(增加/移除)
-const addTicketCategory = (scheduleIndex: number) => {
+const addTicketCategory = (scheduleIndex) => {
   const newTicketCategory = activityHandle().getDefaultTicketCategory
-  schedules[scheduleIndex].ticketCategories.push({ ...newTicketCategory })
+  activity.schedules[scheduleIndex].ticketCategories.push({ ...newTicketCategory })
 }
-const removeTicketCategory = (scheduleIndex: number, ticketCategoryIndex: number) => {
-  schedules[scheduleIndex].ticketCategories.splice(ticketCategoryIndex, 1)
+const removeTicketCategory = (scheduleIndex, ticketCategoryIndex) => {
+  activity.schedules[scheduleIndex].ticketCategories.splice(ticketCategoryIndex, 1)
 }
 
 //場次操作(增加移除)
 const addSchedule = () => {
   const newSchedule = activityHandle().getDefaultSchedule
-  schedules.unshift({
+  activity.schedules.unshift({
     ...newSchedule,
-    scheduleName: `場次${schedules.length + 1}`
+    scheduleName: `場次${activity.schedules.length + 1}`
   })
 }
-const removeSchedule = (scheduleIndex: number) => {
-  schedules.splice(scheduleIndex, 1)
+const removeSchedule = (scheduleIndex) => {
+  activity.schedules.splice(scheduleIndex, 1)
 }
 </script>
 
