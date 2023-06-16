@@ -6,30 +6,50 @@
         <extended-date-picker
           class="date-picker"
           v-if="field.id === 'dateRange'"
-          v-model="activityInfo.dateRange"
           range
           type="datetime"
           placeholder="請選擇日期區間"
+          :model-value="formatDateTime"
+          @update:modelValue="(value) => updateDateValue(value)"
         />
         <template v-else>
           <input
             class="form-control"
-            v-model="activityInfo[field.id]"
+            v-model="activity.information[field.id]"
             :placeholder="`請輸入${field.name}`"
           />
-          <button v-if="field.id === 'mainImageUrl'" class="btn btn-primary">上傳圖片</button>
+          <button disabled v-if="field.id === 'mainImageUrl'" class="btn btn-primary">
+            上傳圖片
+          </button>
         </template>
       </div>
     </template>
   </section>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import activityInfoFields from '@/formFields/activityInfoFields'
 import { activityHandle } from '@/stores/activityHandle'
 import ExtendedDatePicker from '@/components/ExtendedDatePicker.vue'
+import { computed } from 'vue'
+import dayjs from 'dayjs'
 
-const activityInfo = activityHandle().information
+const activity = activityHandle()
+
+//轉換date模式，供時間套件使用
+const formatDateTime = computed(() => {
+  if (!activity.information.startDate) return []
+  return [
+    dayjs(activity.information.startDate).toDate(),
+    dayjs(activity.information.endDate).toDate()
+  ]
+})
+
+//更新時間
+const updateDateValue = (dateRangeValue) => {
+  activity.information.startDate = dateRangeValue[0] ? dateRangeValue[0].toISOString() : null
+  activity.information.endDate = dateRangeValue[1] ? dateRangeValue[1].toISOString() : null
+}
 </script>
 
 <style scoped lang="scss">
