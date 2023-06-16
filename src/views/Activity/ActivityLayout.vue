@@ -7,7 +7,13 @@
       <schedule-tickets v-show="currentTab === 'scheduleTickets'" />
     </div>
   </div>
-  <button v-if="!pageLoading.loading" class="btn btn-primary btn-lg fix-button" @click="saveActivity">儲存</button>
+  <button
+    v-if="!pageLoading.loading"
+    class="btn btn-primary btn-lg fix-button"
+    @click="saveActivity"
+  >
+    儲存
+  </button>
 </template>
 
 <script setup lang="ts">
@@ -18,7 +24,7 @@ import Content from '@/views/Activity/Content.vue'
 import ScheduleTickets from '@/views/Activity/ScheduleTickets.vue'
 import { activityHandle } from '@/stores/activityHandle'
 import { pageLoadingStore } from '@/stores/pageLoading'
-import { getActivity } from '@/apis/activities/activities'
+import { getActivity, postActivity, patchActivity } from '@/apis/activities/activities'
 import { useRouter, useRoute } from 'vue-router'
 import { useToast } from 'vue-toastification'
 
@@ -30,8 +36,6 @@ const activityData = activityHandle()
 onBeforeMount(() => {
   activityData.reset()
 })
-
-const saveActivity = () => {}
 
 const route = useRoute()
 const router = useRouter()
@@ -60,6 +64,36 @@ const fetchActivity = async () => {
     }
   } catch (error) {
     await handleFetchError()
+  }
+  pageLoading.changeLoadingStatus(false)
+}
+
+const saveActivity = async () => {
+  pageLoading.changeLoadingStatus(true)
+  const saleDateRange = activityData.getSaleDateRange
+  const submitForm = {
+    ...activityData.information,
+    ...{
+      HtmlContent: activityData.HtmlContent,
+      HtmlNotice: activityData.HtmlNotice,
+      schedules: activityData.schedules,
+      saleStartDate: saleDateRange[0],
+      saleEndDate: saleDateRange[1]
+    }
+  }
+
+  try {
+    let res = null
+    if (routeParamsId === 'new') res = await postActivity(submitForm)
+    else res = await patchActivity(routeParamsId, submitForm)
+    if (res.status === 200) {
+      Toast.success(`${routeParamsId === 'new' ? '新增' : '編輯'}成功！`)
+      await router.push('/activities')
+    } else {
+      Toast.error('儲存失敗。')
+    }
+  } catch (error: any) {
+    Toast.error(error.response.data.message)
   }
   pageLoading.changeLoadingStatus(false)
 }

@@ -1,10 +1,12 @@
 import { defineStore } from 'pinia'
 import _ from 'lodash'
 import activityInfoFields from '@/formFields/activityInfoFields'
+import dayjs from 'dayjs'
 
 let defaultInformation: { [key: string]: any } = {}
 _.forEach(activityInfoFields, (field) => {
-  defaultInformation[field.id] = field.id === 'dateRange' ? [] : null
+  if (field.id === 'dateRange') return
+  defaultInformation[field.id] = null
 })
 
 const defaultTicketCategory = {
@@ -61,6 +63,34 @@ export const activityHandle = defineStore('activityHandle', {
     },
     getDefaultSchedule() {
       return defaultSchedule
+    },
+    getSaleDateRange(state) {
+      //計算場次的販售最早與最晚日期
+      if (!state.schedules.length) return [null, null]
+
+      let earliestDate: string | null = null
+      let latestDate: string | null = null
+
+      for (const schedule of state.schedules) {
+        if (schedule.saleStartTime === null) {
+          earliestDate = null
+          latestDate = null
+          break // 中斷
+        }
+
+        const startTime = dayjs(schedule.saleStartTime)
+        const endTime = dayjs(schedule.saleEndTime)
+
+        if (earliestDate === null || startTime.isBefore(earliestDate)) {
+          earliestDate = startTime.toISOString()
+        }
+
+        if (latestDate === null || endTime.isAfter(latestDate)) {
+          latestDate = endTime.toISOString()
+        }
+      }
+
+      return [earliestDate, latestDate]
     }
   }
 })

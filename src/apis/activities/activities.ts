@@ -12,3 +12,13 @@ export const getActivities = async (searchQuery: SearchQuery) => {
 export const getActivity = async (activityId: string) => {
   return await https.get(`/activities/${activityId}`)
 }
+
+//新增活動
+export const postActivity = async (form: any) => {
+  return await https.post('/activities', form)
+}
+
+//編輯活動
+export const patchActivity = async (id: string, form: any) => {
+  return await https.patch(`/activities/${id}`, form)
+}
