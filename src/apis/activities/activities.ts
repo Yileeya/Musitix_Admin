@@ -22,3 +22,12 @@ export const postActivity = async (form: any) => {
 export const patchActivity = async (id: string, form: any) => {
   return await https.patch(`/activities/${id}`, form)
 }
+
+//上架
+export const publishActivity = async (id: string) => {
+  return await https.post(`/activities/${id}/publish`)
+}
+//停辦/取消
+export const cancelActivity = async (id: string) => {
+  return await https.post(`/activities/${id}/cancel`)
+}

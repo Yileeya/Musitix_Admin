@@ -5,6 +5,7 @@
       :loading="loading"
       :activities="activities"
       @router-change="routerChange"
+      @refresh="fetchSearch"
     />
   </div>
 </template>

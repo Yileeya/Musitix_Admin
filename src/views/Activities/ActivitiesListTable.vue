@@ -33,15 +33,30 @@
                 <!--今天之後的活動才可操作-->
                 <div v-if="activity.status === 1">
                   <!--未上架，可編輯-->
-                  <button class="btn btn-sm btn-warning">上架</button>
+                  <button
+                    class="btn btn-sm btn-warning"
+                    @click="handleActivity('publish', activity._id)"
+                  >
+                    上架
+                  </button>
                   <button class="btn btn-sm btn-primary" @click="emitChangeRouterId(activity._id)">
                     編輯
                   </button>
-                  <button class="btn btn-sm btn-danger">取消</button>
+                  <button
+                    class="btn btn-sm btn-danger"
+                    @click="handleActivity('cancel', activity._id)"
+                  >
+                    取消
+                  </button>
                 </div>
                 <div v-if="activity.status === 2">
                   <!--已上架，只可停辦-->
-                  <button class="btn btn-sm btn-secondary">停辦</button>
+                  <button
+                    class="btn btn-sm btn-secondary"
+                    @click="handleActivity('shutDown', activity._id)"
+                  >
+                    停辦
+                  </button>
                 </div>
               </template>
             </td>
@@ -57,10 +72,13 @@ import { dateFormatUTC } from '@/utils/dateFormat'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
 import dayjs from 'dayjs'
 import _ from 'lodash'
+import { useToast } from 'vue-toastification'
 import activityStatusFields from '@/formFields/activityStatusFields'
+import { publishActivity, cancelActivity } from '@/apis/activities/activities'
+import { pageLoadingStore } from '@/stores/pageLoading'
 
 defineProps(['loading', 'activities'])
-const emit = defineEmits(['routerChange'])
+const emit = defineEmits(['routerChange', 'refresh'])
 
 const showActivityDate = (startDate, endDate) => {
   const startDateFormat = dateFormatUTC(startDate, 'YYYY-MM-DD')
@@ -82,6 +100,31 @@ const dateIsAfterToday = (startDate) => {
 
 const emitChangeRouterId = (activityId) => {
   emit('routerChange', activityId)
+}
+
+const pageLoading = pageLoadingStore()
+const Toast = useToast()
+
+const handleActivity = async (target, activityId) => {
+  pageLoading.changeLoadingStatus(true)
+  try {
+    let res = null
+    if (target === 'publish') res = await publishActivity(activityId)
+    else res = await cancelActivity(activityId)
+    if (res.status === 200) {
+      let text = null
+      if (target === 'publish') text = '上架'
+      else if (target === 'cancel') text = '取消'
+      else text = '停辦'
+      Toast.success(`${text}成功！`)
+      emit('refresh')
+    } else {
+      Toast.error('操作失敗。')
+    }
+  } catch (error) {
+    Toast.error(error.response.data.message)
+  }
+  pageLoading.changeLoadingStatus(false)
 }
 </script>
 
