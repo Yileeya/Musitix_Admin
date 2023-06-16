@@ -7,3 +7,8 @@ export const getActivities = async (searchQuery: SearchQuery) => {
     params: searchQuery
   })
 }
+
+//獲取單筆活動
+export const getActivity = async (activityId: string) => {
+  return await https.get(`/activities/${activityId}`)
+}
