@@ -170,7 +170,9 @@ const removeTicketCategory = (scheduleIndex, ticketCategoryIndex) => {
 
 //場次操作(增加移除)
 const addSchedule = () => {
-  const newSchedule = activityHandle().getDefaultSchedule
+  const newSchedule = _.cloneDeep(activity.getDefaultSchedule)
+  newSchedule.ticketCategories = newSchedule.ticketCategories.map((category) => _.clone(category))
+
   activity.schedules.unshift({
     ...newSchedule,
     scheduleName: `場次${activity.schedules.length + 1}`
