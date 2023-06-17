@@ -27,7 +27,13 @@ export const patchActivity = async (id: string, form: any) => {
 export const publishActivity = async (id: string) => {
   return await https.post(`/activities/${id}/publish`)
 }
+
 //停辦/取消
 export const cancelActivity = async (id: string) => {
   return await https.post(`/activities/${id}/cancel`)
+}
+
+//上傳圖片
+export const uploadActivityImage = async (file: any) => {
+  return await https.post('/activities/upload_image', file)
 }

@@ -18,9 +18,14 @@
             v-model="activity.information[field.id]"
             :placeholder="`請輸入${field.name}`"
           />
-          <button disabled v-if="field.id === 'mainImageUrl'" class="btn btn-primary">
-            上傳圖片
-          </button>
+          <template v-if="field.id === 'mainImageUrl'">
+            <upload-img-button
+              :class-names="'btn btn-primary'"
+              :disabled="uploadButtonDisabled"
+              @upload-image="uploadImage"
+            />
+            <img class="check-img" :src="activity.information.mainImageUrl" alt="預覽" />
+          </template>
         </template>
       </div>
     </template>
@@ -31,8 +36,11 @@
 import activityInfoFields from '@/formFields/activityInfoFields'
 import { activityHandle } from '@/stores/activityHandle'
 import ExtendedDatePicker from '@/components/ExtendedDatePicker.vue'
-import { computed } from 'vue'
+import UploadImgButton from '@/components/UploadImgButton.vue'
+import { uploadActivityImage } from '@/apis/activities/activities'
+import { computed, ref } from 'vue'
 import dayjs from 'dayjs'
+import { useToast } from 'vue-toastification'
 
 const activity = activityHandle()
 
@@ -50,6 +58,24 @@ const updateDateValue = (dateRangeValue) => {
   activity.information.startDate = dateRangeValue[0] ? dateRangeValue[0].toISOString() : null
   activity.information.endDate = dateRangeValue[1] ? dateRangeValue[1].toISOString() : null
 }
+
+const Toast = useToast()
+const uploadButtonDisabled = ref(false)
+const uploadImage = async (file) => {
+  uploadButtonDisabled.value = true
+  try {
+    let res = await uploadActivityImage(file)
+    if (res.status === 200) {
+      Toast.success('圖片上傳成功！')
+      activity.information.mainImageUrl = res.data.data
+    } else {
+      Toast.error('圖片上傳失敗！')
+    }
+  } catch (error) {
+    Toast.error('圖片上傳失敗！')
+  }
+  uploadButtonDisabled.value = false
+}
 </script>
 
 <style scoped lang="scss">
@@ -57,6 +83,7 @@ const updateDateValue = (dateRangeValue) => {
   .form-group {
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
     gap: 15px;
     margin: 15px 0;
 
@@ -70,6 +97,10 @@ const updateDateValue = (dateRangeValue) => {
 
     .date-picker {
       width: 370px;
+    }
+
+    .check-img {
+      max-width: 100%;
     }
   }
 }
