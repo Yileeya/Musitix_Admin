@@ -63,7 +63,6 @@ export const activityHandle = defineStore('activityHandle', {
     },
     getDefaultSchedule() {
       let copyDefaultSchedule = _.cloneDeep(defaultSchedule)
-      console.log(defaultTicketCategory)
       copyDefaultSchedule.ticketCategories = [{...defaultTicketCategory}]
       return copyDefaultSchedule
     },
