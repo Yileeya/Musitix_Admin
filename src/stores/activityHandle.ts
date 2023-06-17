@@ -62,7 +62,7 @@ export const activityHandle = defineStore('activityHandle', {
       return defaultTicketCategory
     },
     getDefaultSchedule() {
-      return defaultSchedule
+      return _.cloneDeep(defaultSchedule)
     },
     getSaleDateRange(state) {
       //計算場次的販售最早與最晚日期
