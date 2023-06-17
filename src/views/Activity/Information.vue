@@ -24,7 +24,7 @@
               :disabled="uploadButtonDisabled"
               @upload-image="uploadImage"
             />
-            <img class="check-img" :src="activity.information.mainImageUrl" alt="預覽" />
+            <img v-if="activity.information.mainImageUrl" class="check-img" :src="activity.information.mainImageUrl" alt="預覽" />
           </template>
         </template>
       </div>
