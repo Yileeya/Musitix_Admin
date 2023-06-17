@@ -3,6 +3,7 @@
     <div class="add-schedule-btn">
       <button type="button" class="btn btn-primary" @click="addSchedule">增加場次</button>
     </div>
+      {{ activity.getDefaultSchedule }}
     <table
       v-for="(schedule, scheduleIndex) in activity.schedules"
       :key="'schedule' + scheduleIndex"
@@ -170,11 +171,13 @@ const removeTicketCategory = (scheduleIndex, ticketCategoryIndex) => {
 
 //場次操作(增加移除)
 const addSchedule = () => {
-  const newSchedule = activity.getDefaultSchedule
+    const newSchedule = _.cloneDeep(activity.getDefaultSchedule)
+    newSchedule.ticketCategories = newSchedule.ticketCategories.map(category => _.clone(category))
+
     activity.schedules.unshift({
-    ..._.cloneDeep(newSchedule),
-    scheduleName: `場次${activity.schedules.length + 1}`
-  })
+        ...newSchedule,
+        scheduleName: `場次${activity.schedules.length + 1}`
+    })
 }
 const removeSchedule = (scheduleIndex) => {
   activity.schedules.splice(scheduleIndex, 1)
